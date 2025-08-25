@@ -30,19 +30,22 @@ func CharacterByIdHandler(s *services.CharacterService) http.HandlerFunc {
 		json.NewEncoder(w).Encode(characterById)
 	}
 }
+
 func FindAllCharactersHandler(s *services.CharacterService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		characters, err := s.FindAllCharactersService()
-
 		if err != nil {
 			http.Error(w, "Erro ao buscar personagens", http.StatusInternalServerError)
 			return
 		}
 
-		allCharacters, err := json.MarshalIndent(characters, "", " ")
+		jsonData, err := json.MarshalIndent(characters, "", "  ")
 		if err != nil {
 			http.Error(w, "Erro ao gerar JSON", http.StatusInternalServerError)
+			return
 		}
-		w.Write(allCharacters)
+
+		w.Header().Set("Content-Type", "application/json")
+		w.Write(jsonData)
 	}
 }
