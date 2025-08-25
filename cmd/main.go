@@ -6,15 +6,28 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/fbomrl/animon-go/handlers"
 	"github.com/fbomrl/animon-go/internal/database"
+	"github.com/fbomrl/animon-go/internal/repository"
+	"github.com/fbomrl/animon-go/services"
 	"github.com/joho/godotenv"
 )
 
 var temp = template.Must(template.ParseGlob("../templates/*.html"))
 
+func methodHandler(method string, handlerFunc http.HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != method {
+			http.Error(w, "Método não permitido", http.StatusMethodNotAllowed)
+			return
+		}
+		handlerFunc(w, r)
+	}
+}
+
 func main() {
-	// variaveis .env
-	err := godotenv.Load()
+	// Carrega .env
+	err := godotenv.Load("../.env")
 	if err != nil {
 		log.Fatal("Erro ao carregar .env")
 	}
@@ -23,13 +36,26 @@ func main() {
 	if dsn == "" {
 		log.Fatal("DSN não definido na variável DB_DSN")
 	}
+
 	db, err := database.SqlServer(dsn)
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer db.Close()
 
+	log.Println("Conectado ao SQL Server com sucesso!")
+
+	// Inicializa repositório e serviço
+	repoCharacter := &repository.CharacterRepository{DB: db}
+	servCharacter := &services.CharacterService{RepoCharacter: repoCharacter}
+
+	// Rotas
 	http.HandleFunc("/", index)
+	http.HandleFunc("/characters/id", methodHandler("GET", handlers.CharacterByIdHandler(servCharacter)))
+	http.HandleFunc("/characters", handlers.FindAllCharactersHandler(servCharacter))
+
+	// Inicia servidor
+	log.Println("Servidor rodando na porta 8000")
 	http.ListenAndServe(":8000", nil)
 }
 
