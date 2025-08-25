@@ -12,11 +12,11 @@ var (
 )
 
 type CharacterService struct {
-	repoCharacter interfaces.CharacterRepositoryInterface
+	RepoCharacter interfaces.CharacterRepositoryInterface
 }
 
 func (s *CharacterService) CharacterByIdService(id int) (*model.Character, error) {
-	character, err := s.repoCharacter.CharacterById(id)
+	character, err := s.RepoCharacter.CharacterById(id)
 	if err != nil {
 		return nil, err
 	}
@@ -27,7 +27,7 @@ func (s *CharacterService) CharacterByIdService(id int) (*model.Character, error
 }
 
 func (s *CharacterService) FindAllCharactersService() ([]*model.Character, error) {
-	characters, err := s.repoCharacter.FindAllCharacters()
+	characters, err := s.RepoCharacter.FindAllCharacters()
 	if err != nil {
 		return nil, err
 	}
