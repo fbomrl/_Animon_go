@@ -26,7 +26,6 @@ func (repo *CharacterRepository) CharacterById(id int) (*model.Character, error)
 
 func (repo *CharacterRepository) FindAllCharacters() ([]*model.Character, error) {
 	rows, err := repo.DB.Query("SELECT * FROM CHARACTER")
-
 	if err != nil {
 		return nil, err
 	}
