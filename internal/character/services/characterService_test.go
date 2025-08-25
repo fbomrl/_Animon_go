@@ -8,27 +8,31 @@ import (
 )
 
 type FakeRepository struct {
-	character *model.Character
-	err       error
+	characters []*model.Character
+	err        error
 }
 
 func (f *FakeRepository) CharacterById(id int) (*model.Character, error) {
 
-	if f.character != nil && f.character.Id == id {
-		return f.character, f.err
+	for _, c := range f.characters {
+		if c.Id == id {
+			return c, nil
+		}
 	}
 	return nil, fmt.Errorf("personagem não encontrado")
 }
 func (f *FakeRepository) FindAllCharacters() ([]*model.Character, error) {
-	return []*model.Character{f.character}, f.err
+	if len(f.characters) > 0 {
+		return f.characters, nil
+	}
+	return nil, fmt.Errorf("nenhum personagem encontrado")
 }
 
 func TestCharacterByIdService(t *testing.T) {
 	//PERSONAGEM EXISTE
 	repo := &FakeRepository{
-		character: &model.Character{
-			Id:   1,
-			Name: "Metanik Seleriem",
+		characters: []*model.Character{
+			&model.Character{Id: 1, Name: "Metanik Seleriem"},
 		},
 		err: nil,
 	}
@@ -49,5 +53,25 @@ func TestCharacterByIdService(t *testing.T) {
 	}
 	if character != nil {
 		t.Errorf("Teste: esperado nil - recebido: %v", character)
+	}
+}
+
+func TestFindAllCharacters(t *testing.T) {
+	repo := &FakeRepository{
+		characters: []*model.Character{
+			{Id: 1, Name: "Metanik Seleriem", Alias: "Metanik", Species: "1"},
+			{Id: 8, Name: "Belchior", Alias: "Theoty", Species: "1"},
+		},
+		err: nil,
+	}
+	characterService := &CharacterService{RepoCharacter: repo}
+
+	allCharacters, err := characterService.FindAllCharactersService()
+	if err != nil {
+		t.Errorf("Teste: esperado sem erro - recebido: %v", err)
+		return
+	}
+	if allCharacters == nil {
+		t.Errorf("Teste: lista personagens não nulo - recebido: nil")
 	}
 }
