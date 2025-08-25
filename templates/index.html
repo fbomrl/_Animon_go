@@ -23,18 +23,16 @@
                     <thead>
                         <tr>
                             <th>Nome</th>
+                            <th>Apelido</th>
                             <th>Espécie</th>
-                            <th>Subspécie</th>
-                            <th>Planeta</th>
                         </tr>
                     </thead>
                     <tbody>
                         {{range .}}
                         <tr>
-                            <td>{{.Nome}}</td>
-                            <td>{{.Especie}}</td>
-                            <td>{{.Subespecie}}</td>
-                            <td>{{.Planeta}}</td>
+                            <td>{{.Name}}</td>
+                            <td>{{.Alias}}</td>
+                            <td>{{.Species}}</td>
                         </tr>
                         {{end}}    
                     </tbody>

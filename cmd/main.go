@@ -14,6 +14,7 @@ import (
 )
 
 var temp = template.Must(template.ParseGlob("../templates/*.html"))
+var servCharacter *services.CharacterService
 
 func methodHandler(method string, handlerFunc http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
@@ -47,7 +48,7 @@ func main() {
 
 	// Inicializa repositório e serviço
 	repoCharacter := &repository.CharacterRepository{DB: db}
-	servCharacter := &services.CharacterService{RepoCharacter: repoCharacter}
+	servCharacter = &services.CharacterService{RepoCharacter: repoCharacter}
 
 	// Rotas
 	http.HandleFunc("/", index)
@@ -61,7 +62,11 @@ func main() {
 
 func index(w http.ResponseWriter, r *http.Request) {
 
-	animon := "Teste"
+	characters, err := servCharacter.FindAllCharactersService()
+	if err != nil {
+		http.Error(w, "Erro ao buscar personagens", http.StatusInternalServerError)
+		return
+	}
 
-	temp.ExecuteTemplate(w, "Index", animon)
+	temp.ExecuteTemplate(w, "Index", characters)
 }
