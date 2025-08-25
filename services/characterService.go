@@ -31,6 +31,7 @@ func (s *CharacterService) FindAllCharactersService() ([]*model.Character, error
 	if err != nil {
 		return nil, err
 	}
+
 	if len(characters) == 0 {
 		return nil, ErrCharacterNotFound
 	}
