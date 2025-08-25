@@ -14,7 +14,7 @@ func (repo *CharacterRepository) CharacterById(id int) (*model.Character, error)
 	var character model.Character
 	err := repo.DB.QueryRow("SELECT * FROM CHARACTER WHERE ID = ?", id).Scan(
 		&character.Id,
-		&character.Nome,
+		&character.Name,
 		&character.Alias,
 		&character.Species,
 	)
@@ -22,4 +22,30 @@ func (repo *CharacterRepository) CharacterById(id int) (*model.Character, error)
 		return nil, err
 	}
 	return &character, nil
+}
+
+func (repo *CharacterRepository) FindAllCharacters() ([]*model.Character, error) {
+	rows, err := repo.DB.Query("SELECT * FROM CHARACTER")
+
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var characters []*model.Character
+
+	for rows.Next() {
+		var character model.Character
+		err := rows.Scan(&character.Id, &character.Name, &character.Alias, &character.Species)
+		if err != nil {
+			return nil, err
+		}
+		characters = append(characters, &character)
+	}
+
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return characters, nil
 }
