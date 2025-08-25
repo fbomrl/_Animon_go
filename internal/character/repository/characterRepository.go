@@ -3,7 +3,7 @@ package repository
 import (
 	"database/sql"
 
-	"github.com/fbomrl/animon-go/internal/model"
+	"github.com/fbomrl/animon-go/internal/character/model"
 )
 
 type CharacterRepository struct {

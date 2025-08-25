@@ -1,6 +1,6 @@
 package interfaces
 
-import "github.com/fbomrl/animon-go/internal/model"
+import "github.com/fbomrl/animon-go/internal/character/model"
 
 type CharacterRepositoryInterface interface {
 	CharacterById(id int) (*model.Character, error)

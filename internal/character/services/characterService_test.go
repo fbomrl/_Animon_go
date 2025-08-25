@@ -3,7 +3,7 @@ package services
 import (
 	"testing"
 
-	"github.com/fbomrl/animon-go/internal/model"
+	"github.com/fbomrl/animon-go/internal/character/model"
 )
 
 type FakeRepository struct {
