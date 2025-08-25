@@ -9,7 +9,7 @@ import (
 	"github.com/fbomrl/animon-go/services"
 )
 
-func FindAllCharactersHandler(s *services.CharacterService) http.HandlerFunc {
+func CharacterByIdHandler(s *services.CharacterService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		url := r.URL.Path
 		idString := strings.TrimPrefix(url, "/characters/id")
@@ -28,5 +28,21 @@ func FindAllCharactersHandler(s *services.CharacterService) http.HandlerFunc {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
 		json.NewEncoder(w).Encode(characterById)
+	}
+}
+func FindAllCharactersHandler(s *services.CharacterService) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		characters, err := s.FindAllCharactersService()
+
+		if err != nil {
+			http.Error(w, "Erro ao buscar personagens", http.StatusInternalServerError)
+			return
+		}
+
+		allCharacters, err := json.MarshalIndent(characters, "", " ")
+		if err != nil {
+			http.Error(w, "Erro ao gerar JSON", http.StatusInternalServerError)
+		}
+		w.Write(allCharacters)
 	}
 }
