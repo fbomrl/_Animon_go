@@ -5,14 +5,7 @@ import (
 	"net/http"
 )
 
-type Animon struct {
-	Nome       string
-	Especie    string
-	Subespecie string
-	Planeta    int
-}
-
-var temp = template.Must(template.ParseGlob("templates/*.html"))
+var temp = template.Must(template.ParseGlob("../templates/*.html"))
 
 func main() {
 	http.HandleFunc("/", index)
@@ -21,11 +14,7 @@ func main() {
 
 func index(w http.ResponseWriter, r *http.Request) {
 
-	animon := []Animon{
-		{Nome: "Metanik", Especie: "Humand", Subespecie: "Dragoid", Planeta: 5},
-		{"Fênix", "Dragoid", "Dinosaurid", 8},
-		{"Teste", "Teste", "Teste", 2},
-	}
+	animon := "Teste"
 
 	temp.ExecuteTemplate(w, "Index", animon)
 }
