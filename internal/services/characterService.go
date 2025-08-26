@@ -3,8 +3,8 @@ package services
 import (
 	"errors"
 
-	"github.com/fbomrl/animon-go/internal/character/model"
-	"github.com/fbomrl/animon-go/internal/character/repository/interfaces"
+	"github.com/fbomrl/animon-go/internal/model"
+	"github.com/fbomrl/animon-go/internal/repository/interfaces"
 )
 
 var (

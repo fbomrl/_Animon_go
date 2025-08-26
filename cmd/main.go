@@ -6,10 +6,10 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/fbomrl/animon-go/handlers"
 	"github.com/fbomrl/animon-go/internal/database"
+	"github.com/fbomrl/animon-go/internal/handlers"
 	"github.com/fbomrl/animon-go/internal/repository"
-	"github.com/fbomrl/animon-go/services"
+	"github.com/fbomrl/animon-go/internal/services"
 	"github.com/joho/godotenv"
 )
 

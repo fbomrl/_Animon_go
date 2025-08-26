@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/fbomrl/animon-go/internal/character/model"
+	"github.com/fbomrl/animon-go/internal/model"
 )
 
 type FakeRepository struct {

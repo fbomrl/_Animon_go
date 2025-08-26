@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/fbomrl/animon-go/internal/character/services"
+	"github.com/fbomrl/animon-go/internal/services"
 )
 
 func CharacterByIdHandler(s *services.CharacterService) http.HandlerFunc {
