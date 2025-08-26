@@ -5,9 +5,23 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
+	"text/template"
 
 	"github.com/fbomrl/animon-go/internal/services"
 )
+
+var temp = template.Must(template.ParseGlob("../templates/*.html"))
+
+func Index(service *services.CharacterService) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		characters, err := service.FindAllCharactersService()
+		if err != nil {
+			http.Error(w, "Erro ao buscar personagens", http.StatusInternalServerError)
+			return
+		}
+		temp.ExecuteTemplate(w, "Index", characters)
+	}
+}
 
 func CharacterByIdHandler(s *services.CharacterService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
